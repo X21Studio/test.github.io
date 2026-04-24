@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roblox Script Generator</title>
+</head>
+<body style="background:#111;color:white;font-family:sans-serif;text-align:center;padding:50px;">
+
+<h1>🤖 Roblox Script Generator</h1>
+
+<input id="input" placeholder="pl: give player speed" style="width:300px;padding:10px;">
+<br><br>
+<button onclick="generate()" style="padding:10px 20px;">Generate</button>
+
+<pre id="output" style="margin-top:20px;white-space:pre-wrap;"></pre>
+
+<script>
+async function generate() {
+  const prompt = document.getElementById("input").value;
+
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer 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",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "deepseek/deepseek-chat",
+      messages: [
+        { role: "user", content: "Write a Roblox Lua script: " + prompt }
+      ]
+    })
+  });
+
+  const data = await res.json();
+  document.getElementById("output").innerText =
+    data.choices[0].message.content;
+}
+</script>
+
+</body>
+</html>
